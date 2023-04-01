@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{F45C81D0-C4C7-4BC2-9B62-D7F20F3C5835}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PortfolioMvc", "Src\PortfolioMvc\PortfolioMvc.csproj", "{E352FACA-3BAF-499C-859D-0D93933BF2FB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E352FACA-3BAF-499C-859D-0D93933BF2FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E352FACA-3BAF-499C-859D-0D93933BF2FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E352FACA-3BAF-499C-859D-0D93933BF2FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E352FACA-3BAF-499C-859D-0D93933BF2FB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E352FACA-3BAF-499C-859D-0D93933BF2FB} = {F45C81D0-C4C7-4BC2-9B62-D7F20F3C5835}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D0802A0A-5834-49A6-8960-77706D0F974C}
+	EndGlobalSection
+EndGlobal
