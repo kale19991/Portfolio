@@ -12,7 +12,7 @@ public class ProjetosService : IProjetosService
                     Titulo = "KalleCOD",
                     Descricao = "Blog de artigos criado em ASP.NET Core desde 2002 com mais de 5000 artigos",
                     Link = "https://dev.azure.com/kalleartes/KalleCOD",
-                    ImagemURL = "https://www.gravatar.com/userimage/213976415/ff686318b8545b09eac6275b9d4ef901?size=120"
+                    ImagemURL = "https://2.gravatar.com/userimage/213976415/910135545213da19d387572d6022dc6b?size=600"
                 }
             };
     }
