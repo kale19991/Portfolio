@@ -10,7 +10,7 @@ public class ProjetosService : IProjetosService
                 new Projeto
                 {
                     Titulo = "KalleCOD",
-                    Descricao = "Blog de artigos criado em ASP.NET Core desde 2002 com mais de 5000 artigos",
+                    Descricao = "Produto com objetivo de agilizar processo de codificar e persistência de dados. Conectando em diversos BDs relacionais.",
                     Link = "https://dev.azure.com/kalleartes/KalleCOD",
                     ImagemURL = "https://2.gravatar.com/userimage/213976415/910135545213da19d387572d6022dc6b?size=600"
                 }

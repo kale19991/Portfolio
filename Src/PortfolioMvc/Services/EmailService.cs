@@ -22,7 +22,7 @@ namespace PortfolioMvc.Services
             var cliente = new SendGridClient(apiKey);
             var from = new EmailAddress(email, nome);
             var subject = $"O cliente {contato.Email} quer entrar em contato";
-            var to = new EmailAddress(email, nome);
+            var to = new EmailAddress(contato.Email, nome);
             var mensagemTexto = contato.Mensagem;
             var conteudoHtml = @$"De: {contato.Nome} - Email: {contato.Email} Mensagem : {contato.Mensagem}";
             var singleEmail = MailHelper.CreateSingleEmail(from, to, subject, mensagemTexto, conteudoHtml);
