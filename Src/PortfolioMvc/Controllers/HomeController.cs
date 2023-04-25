@@ -15,8 +15,6 @@ namespace PortfolioMvc.Controllers
 
         public IActionResult Index()
         {
-            _logger.LogDebug("Hello world from dotnet6!");
-
             return View();
         }
 
