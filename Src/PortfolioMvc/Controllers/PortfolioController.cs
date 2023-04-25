@@ -8,12 +8,15 @@ namespace PortfolioMvc.Controllers
     {
         private readonly IProjetosService _projetoService;
         private readonly IEmailService _emailService;
+        private readonly ILogger<PortfolioController> _logger;
 
-        public PortfolioController(IProjetosService projetoService, 
-            IEmailService emailService)
+        public PortfolioController(IProjetosService projetoService,
+            IEmailService emailService,
+            ILogger<PortfolioController> logger)
         {
             _projetoService = projetoService;
             _emailService = emailService;
+            _logger = logger;
         }
 
         public IActionResult Index()
