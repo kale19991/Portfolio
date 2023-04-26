@@ -2,7 +2,9 @@ using KissLog.AspNetCore;
 using KissLog.CloudListeners.Auth;
 using KissLog.CloudListeners.RequestLogsListener;
 using KissLog.Formatters;
+using PortfolioMvc;
 using PortfolioMvc.Services;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddLogging(provider =>
@@ -26,6 +28,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IProjetosService, ProjetosService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 
+builder.Services.Configure<Settings>(builder.Configuration);
+var settings = builder.Configuration.Get<Settings>();
+builder.Services.AddSingleton(settings);
 
 var app = builder.Build();
 
@@ -49,12 +54,12 @@ app.MapControllerRoute(
 
 app.UseKissLogMiddleware(options => {
     options.Listeners.Add(new RequestLogsApiListener(new Application(
-        builder.Configuration["KissLog.OrganizationId"],
-        builder.Configuration["KissLog.ApplicationId"])
+       settings.KissLog.OrganizationId,
+        settings.KissLog.ApplicationId)
     )
     {
-        ApiUrl = builder.Configuration["KissLog.ApiUrl"]
-    });
+        ApiUrl = settings.KissLog.ApiUrl
+    });;
 });
 
 app.Run();
