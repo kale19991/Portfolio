@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PortfolioMvc.Services;
 using PortfolioMvc.ViewModels;
+using Squidex.ClientLibrary;
 
 namespace PortfolioMvc.Controllers
 {
@@ -9,19 +10,23 @@ namespace PortfolioMvc.Controllers
         private readonly IProjetosService _projetoService;
         private readonly IEmailService _emailService;
         private readonly ILogger<PortfolioController> _logger;
+        private readonly ISquidexClient _squidex;
 
         public PortfolioController(IProjetosService projetoService,
             IEmailService emailService,
+            ISquidexClient squidex,
             ILogger<PortfolioController> logger)
         {
             _projetoService = projetoService;
             _emailService = emailService;
+            _squidex = squidex;
             _logger = logger;
         }
 
         public IActionResult Index()
         {
             var projetos = _projetoService.GetProjetos().Take(3).ToList();
+            var result = _squidex.Schemas.GetSchemasAsync().Result;
 
             var modelo = new PortfolioViewModel()
             {
