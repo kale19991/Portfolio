@@ -1,0 +1,1393 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Squidex API",
+    "description": "# Introduction\n\nThe API provides two specifications. The Content API usually returns one object per schema field where the keys are the languages (or `iv` for non-localized) fields and the values are the actual field values.\n\nYou can use the `X-Flatten` header to return a flat structure when you query content items. This is more performant and easier for code generation. Unfortunantely it cannot be modelled with OpenAPI. Therefore we provide two different documents for your API.\n\nRead more about this here: https://docs.squidex.io/02-documentation/concepts/localization#how-to-use-the-api\n\n## Normal Content API\n\nAll content fields are objects in the response.\n\nGo to: https://cloud.squidex.io/api/content/kalleportfolio/docs/\n\n## Flat Content API\n\nAll content fields are single values.\n\nGo to: https://cloud.squidex.io/api/content/kalleportfolio/docs/flat/",
+    "version": "7.0.0.0",
+    "x-logo": {
+      "url": "https://cloud.squidex.io/images/logo-white.png",
+      "backgroundStyle": "",
+      "backgroundColor": "#3f83df"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://cloud.squidex.io"
+    }
+  ],
+  "paths": {
+    "/api/content/kalleportfolio/projetos/": {
+      "get": {
+        "tags": [
+          "Projetos"
+        ],
+        "summary": "Query 'Projetos' contents items.",
+        "description": "How to make queries?\n\nRead more about it at: https://docs.squidex.io/04-guides/02-api.html\n\nThe query endpoints support three options:\n\n### Query with OData\n\nSquidex supports a subset of the OData (https://www.odata.org/) syntax with with the following query options:\n\n* **$top**: The $top query option requests the number of items in the queried collection to be included in the result. The default value is 20 and the maximum allowed value is 200. You can change the maximum in the app settings, when you host Squidex yourself.\n* **$skip**: The $skip query option requests the number of items in the queried collection that are to be skipped and not included in the result. Use it together with $top to read the all your data page by page. \n* **$search**: The $search query option allows clients to request entities matching a free-text search expression. We add the data of all fields for all languages to our full text engine.\n* **$filter**: The $filter query option allows clients to filter a collection of resources that are addressed by a request URL.\n* **$orderby**: The $orderby query option allows clients to request resources in a particular order.\n\n### Query with JSON query\n\nSquidex also supports a query syntax based on JSON. You have to pass in the query object as query parameter:\n\n* **q**: A json text that represents the same query options as with OData, but is more performant to parse.\n\n### Query by IDs\n\nQuery your items by passing in one or many IDs with the following query parameter:\n\n* **ids**: A comma-separated list of ids. If you define this option all other settings are ignored.",
+        "operationId": "QueryProjetosContent",
+        "parameters": [
+          {
+            "name": "$search",
+            "in": "query",
+            "description": "Optional number of items to skip.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "$top",
+            "in": "query",
+            "description": "Optional number of items to take.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "$skip",
+            "in": "query",
+            "description": "Optional number of items to skip.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "$orderby",
+            "in": "query",
+            "description": "Optional OData order definition.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "$filter",
+            "in": "query",
+            "description": "Optional OData filter.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "JSON query as well formatted json string. Overrides all other query parameters, except 'ids'.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "Comma separated list of object IDs. Overrides all other query parameters.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Content items retrieved.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetosContentResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Content query not valid."
+          }
+        },
+        "security": [
+          {
+            "squidex-oauth-auth": [
+              "squidex.apps.kalleportfolio.contents.projetos.read.own"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Projetos"
+        ],
+        "summary": "Create a 'Projetos' content item.",
+        "operationId": "CreateProjetosContent",
+        "parameters": [
+          {
+            "name": "publish",
+            "in": "query",
+            "description": "Set to true to autopublish content on create.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "id",
+            "in": "query",
+            "description": "The optional custom content ID.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "x-name": "data",
+          "description": "The data of the content.\n            \nPlease note that each field is an object with one entry per language. \nIf the field is not localizable you must use `iv` (invariant language) as a key.\n\nRead more about it at: https://docs.squidex.io/04-guides/02-api.html",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjetosDataDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Content item created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetosContentDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Content data not valid."
+          }
+        },
+        "security": [
+          {
+            "squidex-oauth-auth": [
+              "squidex.apps.kalleportfolio.contents.projetos.create"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/content/kalleportfolio/projetos/query": {
+      "post": {
+        "tags": [
+          "Projetos"
+        ],
+        "summary": "Query 'Projetos' contents items using Post.",
+        "operationId": "QueryPostProjetosContent",
+        "requestBody": {
+          "x-name": "query",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Content items retrieved.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetosContentResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Content query not valid."
+          }
+        },
+        "security": [
+          {
+            "squidex-oauth-auth": [
+              "squidex.apps.kalleportfolio.contents.projetos.read.own"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/content/kalleportfolio/projetos/{id}": {
+      "get": {
+        "tags": [
+          "Projetos"
+        ],
+        "summary": "Get a 'Projetos' content item.",
+        "operationId": "GetProjetosContent",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "query",
+            "description": "The version of the objec.",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the object (usually GUID).",
+            "schema": {
+              "type": "string"
+            },
+            "nullable": false
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Content item not found."
+          },
+          "200": {
+            "description": "Content item returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetosContentDto"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "squidex-oauth-auth": [
+              "squidex.apps.kalleportfolio.contents.projetos.read.own"
+            ]
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Projetos"
+        ],
+        "summary": "Upsert a 'Projetos' content item.",
+        "operationId": "UpsertProjetosContent",
+        "parameters": [
+          {
+            "name": "patch",
+            "in": "query",
+            "description": "Makes the update as patch.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "publish",
+            "in": "query",
+            "description": "Set to true to autopublish content on create.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the object (usually GUID).",
+            "schema": {
+              "type": "string"
+            },
+            "nullable": false
+          }
+        ],
+        "requestBody": {
+          "x-name": "data",
+          "description": "The data of the content.\n            \nPlease note that each field is an object with one entry per language. \nIf the field is not localizable you must use `iv` (invariant language) as a key.\n\nRead more about it at: https://docs.squidex.io/04-guides/02-api.html",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjetosDataDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Content item not found."
+          },
+          "200": {
+            "description": "Content item created or updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetosContentDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Content data not valid."
+          }
+        },
+        "security": [
+          {
+            "squidex-oauth-auth": [
+              "squidex.apps.kalleportfolio.contents.projetos.upsert"
+            ]
+          }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Projetos"
+        ],
+        "summary": "Update a 'Projetos' content item.",
+        "operationId": "UpdateProjetosContent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the object (usually GUID).",
+            "schema": {
+              "type": "string"
+            },
+            "nullable": false
+          }
+        ],
+        "requestBody": {
+          "x-name": "data",
+          "description": "The data of the content.\n            \nPlease note that each field is an object with one entry per language. \nIf the field is not localizable you must use `iv` (invariant language) as a key.\n\nRead more about it at: https://docs.squidex.io/04-guides/02-api.html",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjetosDataDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Content item not found."
+          },
+          "200": {
+            "description": "Content item updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetosContentDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Content data not valid."
+          }
+        },
+        "security": [
+          {
+            "squidex-oauth-auth": [
+              "squidex.apps.kalleportfolio.contents.projetos.update.own"
+            ]
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Projetos"
+        ],
+        "summary": "Patch a 'Projetos' content item.",
+        "operationId": "PatchProjetosContent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the object (usually GUID).",
+            "schema": {
+              "type": "string"
+            },
+            "nullable": false
+          }
+        ],
+        "requestBody": {
+          "x-name": "data",
+          "description": "The data of the content.\n            \nPlease note that each field is an object with one entry per language. \nIf the field is not localizable you must use `iv` (invariant language) as a key.\n\nRead more about it at: https://docs.squidex.io/04-guides/02-api.html",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ProjetosDataDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Content item not found."
+          },
+          "200": {
+            "description": "Content item updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetosContentDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Content data not valid."
+          }
+        },
+        "security": [
+          {
+            "squidex-oauth-auth": [
+              "squidex.apps.kalleportfolio.contents.projetos.update.own"
+            ]
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Projetos"
+        ],
+        "summary": "Delete a 'Projetos' content item.",
+        "operationId": "DeleteProjetosContent",
+        "parameters": [
+          {
+            "name": "permanent",
+            "in": "query",
+            "description": "True when the entity should be deleted permanently.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the object (usually GUID).",
+            "schema": {
+              "type": "string"
+            },
+            "nullable": false
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Content item not found."
+          },
+          "204": {
+            "description": "Content item deleted"
+          }
+        },
+        "security": [
+          {
+            "squidex-oauth-auth": [
+              "squidex.apps.kalleportfolio.contents.projetos.delete.own"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/content/kalleportfolio/projetos/{id}/{version}": {
+      "get": {
+        "tags": [
+          "Projetos"
+        ],
+        "summary": "Get a 'Projetos' content item by id and version.",
+        "operationId": "GetVersionedProjetosContent",
+        "parameters": [
+          {
+            "name": "version",
+            "in": "path",
+            "required": true,
+            "description": "The version of the objec.",
+            "schema": {
+              "type": "number"
+            },
+            "nullable": false
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the object (usually GUID).",
+            "schema": {
+              "type": "string"
+            },
+            "nullable": false
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Content item not found."
+          },
+          "200": {
+            "description": "Content item returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetosDataDto"
+                }
+              }
+            }
+          }
+        },
+        "deprecated": true,
+        "security": [
+          {
+            "squidex-oauth-auth": [
+              "squidex.apps.kalleportfolio.contents.projetos.read.own"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/content/kalleportfolio/projetos/{id}/validity": {
+      "get": {
+        "tags": [
+          "Projetos"
+        ],
+        "summary": "Validates a 'Projetos' content item.",
+        "operationId": "ValidateProjetosContent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the object (usually GUID).",
+            "schema": {
+              "type": "string"
+            },
+            "nullable": false
+          }
+        ],
+        "responses": {
+          "404": {
+            "description": "Content item not found."
+          },
+          "200": {
+            "description": "Content item is valid."
+          },
+          "400": {
+            "description": "Content item is not valid."
+          }
+        },
+        "security": [
+          {
+            "squidex-oauth-auth": [
+              "squidex.apps.kalleportfolio.contents.projetos.read.own"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/content/kalleportfolio/projetos/bulk": {
+      "post": {
+        "tags": [
+          "Projetos"
+        ],
+        "summary": "Bulk update content items.",
+        "operationId": "BulkProjetosContent",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkUpdateContentsDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Contents created, update or delete.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contents request not valid."
+          }
+        },
+        "security": [
+          {
+            "squidex-oauth-auth": [
+              "squidex.apps.kalleportfolio.contents.projetos.read.own"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/content/kalleportfolio/projetos/{id}/status": {
+      "put": {
+        "tags": [
+          "Projetos"
+        ],
+        "summary": "Change the status of a 'Projetos' content item.",
+        "operationId": "ChangeProjetosContent",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the object (usually GUID).",
+            "schema": {
+              "type": "string"
+            },
+            "nullable": false
+          }
+        ],
+        "requestBody": {
+          "x-name": "request",
+          "description": "The request to change content status.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChangeStatusDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "404": {
+            "description": "Content item not found."
+          },
+          "200": {
+            "description": "Content status updated.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProjetosContentDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Content status not valid."
+          }
+        },
+        "security": [
+          {
+            "squidex-oauth-auth": [
+              "squidex.apps.kalleportfolio.contents.projetos.changestatus.own"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/content/kalleportfolio/": {
+      "get": {
+        "tags": [
+          "__Shared"
+        ],
+        "summary": "Query contents across all schemas.",
+        "operationId": "Query__SharedContent",
+        "parameters": [
+          {
+            "name": "ids",
+            "in": "query",
+            "description": "Comma-separated list of content IDs.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Content items retrieved.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContentResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Query not valid."
+          }
+        },
+        "security": [
+          {
+            "squidex-oauth-auth": [
+              "squidex.apps.kalleportfolio.contents.__Shared.read.own"
+            ]
+          }
+        ]
+      }
+    },
+    "/api/content/kalleportfolio/bulk": {
+      "post": {
+        "tags": [
+          "__Shared"
+        ],
+        "summary": "Bulk update content items across all schemas.",
+        "operationId": "Bulk__SharedContent",
+        "requestBody": {
+          "x-name": "request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BulkUpdateContentsDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Contents created, update or delete.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BulkResultDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Contents request not valid."
+          }
+        },
+        "security": [
+          {
+            "squidex-oauth-auth": [
+              "squidex.apps.kalleportfolio.contents.__Shared.read.own"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ChangeStatusDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "Status"
+        ],
+        "properties": {
+          "Status": {
+            "type": "string",
+            "description": "The new status.",
+            "minLength": 1
+          },
+          "DueTime": {
+            "type": "string",
+            "description": "The due time.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "CheckReferrers": {
+            "type": "boolean",
+            "description": "True to check referrers of this content."
+          }
+        }
+      },
+      "BulkUpdateContentsDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "Jobs"
+        ],
+        "properties": {
+          "Jobs": {
+            "type": "array",
+            "description": "The contents to update or insert.",
+            "items": {
+              "$ref": "#/components/schemas/BulkUpdateContentsJobDto"
+            }
+          },
+          "Publish": {
+            "type": "boolean",
+            "description": "True to automatically publish the content.",
+            "deprecated": true,
+            "x-deprecatedMessage": "Use 'jobs.status' fields now."
+          },
+          "DoNotScript": {
+            "type": "boolean",
+            "description": "True to turn off scripting for faster inserts. Default: true."
+          },
+          "DoNotValidate": {
+            "type": "boolean",
+            "description": "True to turn off validation for faster inserts. Default: false."
+          },
+          "DoNotValidateWorkflow": {
+            "type": "boolean",
+            "description": "True to turn off validation of workflow rules. Default: false."
+          },
+          "CheckReferrers": {
+            "type": "boolean",
+            "description": "True to check referrers of deleted contents."
+          },
+          "OptimizeValidation": {
+            "type": "boolean",
+            "description": "True to turn off costly validation: Unique checks, asset checks and reference checks. Default: true."
+          }
+        }
+      },
+      "BulkUpdateContentsJobDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Query": {
+            "description": "An optional query to identify the content to update.",
+            "nullable": true,
+            "$ref": "#/components/schemas/QueryJsonDto"
+          },
+          "Id": {
+            "type": "string",
+            "description": "An optional ID of the content to update.",
+            "nullable": true
+          },
+          "Data": {
+            "description": "The data of the content when type is set to 'Upsert', 'Create', 'Update' or 'Patch.",
+            "nullable": true,
+            "$ref": "#/components/schemas/ContentData"
+          },
+          "Status": {
+            "type": "string",
+            "description": "The new status when the type is set to 'ChangeStatus' or 'Upsert'.",
+            "nullable": true
+          },
+          "DueTime": {
+            "type": "string",
+            "description": "The due time.",
+            "format": "date-time",
+            "nullable": true
+          },
+          "Type": {
+            "description": "The update type.",
+            "$ref": "#/components/schemas/BulkUpdateContentType"
+          },
+          "Schema": {
+            "type": "string",
+            "description": "The optional schema id or name.",
+            "nullable": true
+          },
+          "Patch": {
+            "type": "boolean",
+            "description": "Makes the update as patch."
+          },
+          "Permanent": {
+            "type": "boolean",
+            "description": "True to delete the content permanently."
+          },
+          "ExpectedCount": {
+            "type": "integer",
+            "description": "The number of expected items. Set it to a higher number to update multiple items when a query is defined.",
+            "format": "int64"
+          },
+          "ExpectedVersion": {
+            "type": "integer",
+            "description": "The expected version.",
+            "format": "int64"
+          }
+        }
+      },
+      "QueryJsonDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Filter": {
+            "nullable": true
+          },
+          "FullText": {
+            "type": "string",
+            "nullable": true
+          },
+          "Skip": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "Take": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "Random": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "Top": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "Sort": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/SortNode"
+            }
+          }
+        }
+      },
+      "SortNode": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Path": {
+            "$ref": "#/components/schemas/PropertyPath"
+          },
+          "Order": {
+            "$ref": "#/components/schemas/SortOrder"
+          }
+        }
+      },
+      "PropertyPath": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Item": {
+            "type": "string"
+          },
+          "Items": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "SortOrder": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Ascending",
+          "Descending"
+        ],
+        "enum": [
+          0,
+          1
+        ]
+      },
+      "ContentData": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "BulkUpdateContentType": {
+        "type": "integer",
+        "description": "",
+        "x-enumNames": [
+          "Upsert",
+          "ChangeStatus",
+          "Create",
+          "Delete",
+          "Patch",
+          "Update",
+          "Validate"
+        ],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "BulkResultDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Error": {
+            "description": "The error when the bulk job failed.",
+            "nullable": true,
+            "$ref": "#/components/schemas/ErrorDto"
+          },
+          "JobIndex": {
+            "type": "integer",
+            "description": "The index of the bulk job where the result belongs to. The order can change.",
+            "format": "int32"
+          },
+          "Id": {
+            "type": "string",
+            "description": "The ID of the entity that has been handled successfully or not.",
+            "nullable": true
+          },
+          "ContentId": {
+            "type": "string",
+            "description": "The ID of the entity that has been handled successfully or not.",
+            "deprecated": true,
+            "x-deprecatedMessage": "Use 'id' field now.",
+            "nullable": true
+          }
+        }
+      },
+      "ErrorDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "Message"
+        ],
+        "properties": {
+          "Message": {
+            "type": "string",
+            "description": "Error message.",
+            "minLength": 1
+          },
+          "ErrorCode": {
+            "type": "string",
+            "description": "The error code.",
+            "nullable": true
+          },
+          "TraceId": {
+            "type": "string",
+            "description": "The optional trace id.",
+            "nullable": true
+          },
+          "Type": {
+            "type": "string",
+            "description": "Link to the error details.",
+            "nullable": true
+          },
+          "Details": {
+            "type": "array",
+            "description": "Detailed error messages.",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "StatusCode": {
+            "type": "integer",
+            "description": "Status code of the http response.",
+            "format": "int32"
+          }
+        }
+      },
+      "QueryDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "Ids": {
+            "type": "array",
+            "description": "The optional list of ids to query.",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "OData": {
+            "type": "string",
+            "description": "The optional odata query.",
+            "nullable": true
+          },
+          "JsonQuery": {
+            "description": "The optional json query.",
+            "nullable": true
+          },
+          "ParentId": {
+            "type": "string",
+            "description": "The parent id (for assets).",
+            "nullable": true
+          }
+        }
+      },
+      "ProjetosDataDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "ProjetoId": {
+            "type": "object",
+            "description": "ProjetoId",
+            "nullable": true,
+            "additionalProperties": {
+              "type": "number",
+              "nullable": true
+            }
+          },
+          "Titulo": {
+            "type": "object",
+            "description": "Titulo",
+            "nullable": true,
+            "additionalProperties": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "Descricao": {
+            "type": "object",
+            "description": "Descricao",
+            "nullable": true,
+            "additionalProperties": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "ImagemURL": {
+            "type": "object",
+            "description": "ImagemURL",
+            "nullable": true,
+            "additionalProperties": {
+              "type": "string",
+              "nullable": true
+            }
+          },
+          "Link": {
+            "type": "object",
+            "description": "Link",
+            "nullable": true,
+            "additionalProperties": {
+              "type": "string",
+              "nullable": true
+            }
+          }
+        }
+      },
+      "ProjetosContentDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "created",
+          "createdBy",
+          "lastModified",
+          "lastModifiedBy",
+          "status",
+          "schemaId",
+          "schemaName",
+          "schemaDisplayName",
+          "statusColor",
+          "data"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the object (usually GUID).",
+            "nullable": false
+          },
+          "created": {
+            "type": "string",
+            "description": "The timestamp when the object was created.",
+            "format": "date-time",
+            "nullable": false
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "The user who created the object.",
+            "nullable": false
+          },
+          "lastModified": {
+            "type": "string",
+            "description": "The timestamp when the object was updated the last time.",
+            "format": "date-time",
+            "nullable": false
+          },
+          "lastModifiedBy": {
+            "type": "string",
+            "description": "The user who updated the object the last time.",
+            "nullable": false
+          },
+          "newStatus": {
+            "type": "string",
+            "description": "The new status of the content.",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the content.",
+            "nullable": false
+          },
+          "newStatusColor": {
+            "type": "string",
+            "description": "The new status color of the content.",
+            "nullable": true
+          },
+          "schemaId": {
+            "type": "string",
+            "description": "The ID of the schema.",
+            "nullable": false
+          },
+          "schemaName": {
+            "type": "string",
+            "description": "The name of the schema.",
+            "nullable": false
+          },
+          "schemaDisplayName": {
+            "type": "string",
+            "description": "The display name of the schema.",
+            "nullable": false
+          },
+          "statusColor": {
+            "type": "string",
+            "description": "The status color of the content.",
+            "nullable": false
+          },
+          "data": {
+            "description": "The data of the content.",
+            "nullable": false,
+            "$ref": "#/components/schemas/ProjetosDataDto"
+          }
+        }
+      },
+      "ProjetosContentResultDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "total",
+          "items"
+        ],
+        "properties": {
+          "total": {
+            "type": "number",
+            "description": "The total count of  contents.",
+            "nullable": false
+          },
+          "items": {
+            "type": "array",
+            "description": "The contents.",
+            "nullable": false,
+            "items": {
+              "$ref": "#/components/schemas/ProjetosContentDto"
+            }
+          }
+        }
+      },
+      "DataDto": {},
+      "ContentDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "created",
+          "createdBy",
+          "lastModified",
+          "lastModifiedBy",
+          "status",
+          "schemaId",
+          "schemaName",
+          "schemaDisplayName",
+          "statusColor",
+          "data"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The ID of the object (usually GUID).",
+            "nullable": false
+          },
+          "created": {
+            "type": "string",
+            "description": "The timestamp when the object was created.",
+            "format": "date-time",
+            "nullable": false
+          },
+          "createdBy": {
+            "type": "string",
+            "description": "The user who created the object.",
+            "nullable": false
+          },
+          "lastModified": {
+            "type": "string",
+            "description": "The timestamp when the object was updated the last time.",
+            "format": "date-time",
+            "nullable": false
+          },
+          "lastModifiedBy": {
+            "type": "string",
+            "description": "The user who updated the object the last time.",
+            "nullable": false
+          },
+          "newStatus": {
+            "type": "string",
+            "description": "The new status of the content.",
+            "nullable": true
+          },
+          "status": {
+            "type": "string",
+            "description": "The status of the content.",
+            "nullable": false
+          },
+          "newStatusColor": {
+            "type": "string",
+            "description": "The new status color of the content.",
+            "nullable": true
+          },
+          "schemaId": {
+            "type": "string",
+            "description": "The ID of the schema.",
+            "nullable": false
+          },
+          "schemaName": {
+            "type": "string",
+            "description": "The name of the schema.",
+            "nullable": false
+          },
+          "schemaDisplayName": {
+            "type": "string",
+            "description": "The display name of the schema.",
+            "nullable": false
+          },
+          "statusColor": {
+            "type": "string",
+            "description": "The status color of the content.",
+            "nullable": false
+          },
+          "data": {
+            "description": "The data of the content.",
+            "nullable": false,
+            "$ref": "#/components/schemas/DataDto"
+          }
+        }
+      },
+      "ContentResultDto": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "total",
+          "items"
+        ],
+        "properties": {
+          "total": {
+            "type": "number",
+            "description": "The total count of  contents.",
+            "nullable": false
+          },
+          "items": {
+            "type": "array",
+            "description": "The contents.",
+            "nullable": false,
+            "items": {
+              "$ref": "#/components/schemas/ContentDto"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "squidex-oauth-auth": {
+        "type": "openIdConnect",
+        "description": "Squidex uses OpenId Connect (OIDC) with the Client Credentials Flow (defined in OAuth 2.0 RFC 6749, section 4.4).\n\nThe OpenId Connect Client Credentials flow can be used for machine to machine authentication. In this grant a specific user is not authorized but rather the credentials are verified and a generic `access_token` is returned.\n\nThe `access_token` is a signed JSON Web Token (JWT) which contains expiry information. \n\nTo retrieve an access token you must pass the Client ID and Client Secret to the token endpoint to authenticate yourself and get a token:\n\n    $ curl\n        -X POST 'https://cloud.squidex.io/identity-server/connect/token' \n        -H 'Content-Type: application/x-www-form-urlencoded' \n        -d 'grant_type=client_credentials&\n            client_id=[CLIENT_ID]&\n            client_secret=[CLIENT_SECRET]&\n\t\t\tscope=squidex-api'\n\nPass this token to all consecutiv requests to the API via the `Authorization` header:\n\n     Authorization: Bearer <token>",
+        "openIdConnectUrl": "https://cloud.squidex.io/identity-server/.well-known/openid-configuration"
+      }
+    }
+  },
+  "security": [
+    {
+      "squidex-oauth-auth": [
+        "squidex-api"
+      ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "Projetos",
+      "description": "API endpoints for 'Projetos' content items."
+    },
+    {
+      "name": "__Shared",
+      "description": "API endpoints for operations across all schemas."
+    }
+  ],
+  "externalDocs": {
+    "url": "https://docs.squidex.io"
+  }
+}
