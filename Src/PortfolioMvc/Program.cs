@@ -2,11 +2,17 @@ using KissLog.AspNetCore;
 using KissLog.CloudListeners.Auth;
 using KissLog.CloudListeners.RequestLogsListener;
 using KissLog.Formatters;
+using Microsoft.Extensions.DependencyInjection;
 using PortfolioMvc;
 using PortfolioMvc.Services;
+using Squidex.ClientLibrary;
 using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.Configure<Settings>(builder.Configuration);
+var settings = builder.Configuration.Get<Settings>();
+builder.Services.AddSingleton(settings);
+
 builder.Services.AddLogging(provider =>
 {
     provider
@@ -23,14 +29,24 @@ builder.Services.AddLogging(provider =>
         });
 });
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<ISquidexClient, SquidexClient>
+(
+    options => 
+        new SquidexClient(
+            new SquidexOptions
+            {
+                AppName = settings.Squidex.SquidexApp,
+                ClientId = settings.Squidex.SquidexClientId,
+                ClientSecret = settings.Squidex.SquidexClientSecret,
+                Url = settings.Squidex.SquidexBaseUrl
+            })
+);
 // Adiciona servi�os no container DI
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IProjetosService, ProjetosService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 
-builder.Services.Configure<Settings>(builder.Configuration);
-var settings = builder.Configuration.Get<Settings>();
-builder.Services.AddSingleton(settings);
+
 
 var app = builder.Build();
 

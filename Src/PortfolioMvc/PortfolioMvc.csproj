@@ -10,6 +10,7 @@
     <PackageReference Include="KissLog.AspNetCore" Version="5.1.2" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.1" />
     <PackageReference Include="SendGrid" Version="9.25.2" />
+    <PackageReference Include="Squidex.ClientLibrary" Version="15.1.0" />
   </ItemGroup>
 
 </Project>
